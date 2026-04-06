@@ -342,6 +342,12 @@ export default function AdminDashboard() {
                 </svg>
                 Add Product
               </Link>
+              <Link href="/admin/analytics" className="ad-hero-btn ad-btn-products">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+                Analytics
+              </Link>
               <Link href="/admin/orders" className="ad-hero-btn ad-btn-orders">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
@@ -429,6 +435,28 @@ export default function AdminDashboard() {
                   <p className="ad-action-sub">View all customer orders and update their delivery status.</p>
                   <span className="ad-action-link" style={{color:'#90cdf4'}}>
                     Open Orders
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </span>
+                </Link>
+
+                <Link href="/admin/analytics" className="ad-action-card" style={{background:'linear-gradient(145deg, #2d1b4e, #4a2d6e)'}}>
+                  <div className="ad-action-decor" />
+                  <span className="ad-action-tag" style={{background:'rgba(196,167,231,0.18)', color:'#c4a7e7'}}>Analytics</span>
+                  <div className="ad-action-title">Sales<br />Analytics</div>
+                  <p className="ad-action-sub">View revenue stats, order charts, and low stock alerts.</p>
+                  <span className="ad-action-link" style={{color:'#c4a7e7'}}>
+                    View Analytics
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </span>
+                </Link>
+
+                <Link href="/admin/customers" className="ad-action-card" style={{background:'linear-gradient(145deg, #4a1942, #6b2460)'}}>
+                  <div className="ad-action-decor" />
+                  <span className="ad-action-tag" style={{background:'rgba(236,167,226,0.18)', color:'#eca7e2'}}>Customers</span>
+                  <div className="ad-action-title">Manage<br />Customers</div>
+                  <p className="ad-action-sub">View customer profiles, order history, and activity.</p>
+                  <span className="ad-action-link" style={{color:'#eca7e2'}}>
+                    View Customers
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </span>
                 </Link>

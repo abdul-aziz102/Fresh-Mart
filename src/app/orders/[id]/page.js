@@ -4,6 +4,172 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
+import WhatsAppOrderButton from '@/components/WhatsAppOrderButton';
+
+const TIMELINE_STEPS = ['Pending', 'Confirmed', 'Out for Delivery', 'Delivered'];
+const STEP_LABELS = ['Order Placed', 'Confirmed', 'Out for Delivery', 'Delivered'];
+
+function formatTimestamp(date) {
+  if (!date) return null;
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function OrderTimeline({ order }) {
+  const isCancelled = order.status === 'Cancelled';
+  const currentIndex = TIMELINE_STEPS.indexOf(order.status);
+
+  // For cancelled orders, figure out how far they got (use updatedAt as the cancel point)
+  // Cancelled orders were at most "Confirmed" since cancellation is blocked after that
+  const cancelledAtIndex = isCancelled
+    ? (order.cancelledAt ? Math.min(currentIndex, 1) : 0)
+    : -1;
+
+  const getStepTimestamp = (index) => {
+    if (index === 0) return formatTimestamp(order.createdAt);
+    if (index === 3 && order.deliveredAt) return formatTimestamp(order.deliveredAt);
+    // For intermediate completed steps, we only have updatedAt as approximation
+    if (index <= currentIndex && !isCancelled) return null;
+    return null;
+  };
+
+  const getStepState = (index) => {
+    if (isCancelled) {
+      if (index <= cancelledAtIndex) return 'completed';
+      if (index === cancelledAtIndex + 1) return 'cancelled';
+      return 'future';
+    }
+    if (index < currentIndex) return 'completed';
+    if (index === currentIndex) return 'current';
+    return 'future';
+  };
+
+  return (
+    <div className="mb-6 md:mb-8 bg-gray-50 rounded-xl p-4 md:p-6">
+      <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4 md:mb-6">Order Progress</h2>
+
+      {/* Horizontal timeline (desktop) */}
+      <div className="hidden md:flex items-start justify-between relative">
+        {STEP_LABELS.map((label, index) => {
+          const state = getStepState(index);
+          const timestamp = getStepTimestamp(index);
+          return (
+            <div key={label} className="flex flex-col items-center flex-1 relative z-10">
+              {/* Circle */}
+              {state === 'completed' && (
+                <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-lg">
+                  ✓
+                </div>
+              )}
+              {state === 'current' && (
+                <div className="w-10 h-10 rounded-full bg-green-100 border-4 border-green-500 flex items-center justify-center relative">
+                  <span className="absolute w-3 h-3 bg-green-500 rounded-full animate-ping" />
+                  <span className="w-3 h-3 bg-green-500 rounded-full" />
+                </div>
+              )}
+              {state === 'cancelled' && (
+                <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white font-bold text-lg">
+                  ✕
+                </div>
+              )}
+              {state === 'future' && (
+                <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-dashed border-gray-300" />
+              )}
+              {/* Label */}
+              <span className={`mt-2 text-sm font-medium text-center ${
+                state === 'completed' || state === 'current' ? 'text-green-700' :
+                state === 'cancelled' ? 'text-red-600' : 'text-gray-400'
+              }`}>
+                {state === 'cancelled' ? 'Cancelled' : label}
+              </span>
+              {/* Timestamp */}
+              {timestamp && (
+                <span className="text-xs text-gray-500 mt-1">{timestamp}</span>
+              )}
+            </div>
+          );
+        })}
+        {/* Connecting lines (behind circles) */}
+        <div className="absolute top-5 left-0 right-0 flex z-0 px-[12.5%]">
+          {[0, 1, 2].map((i) => {
+            const fromState = getStepState(i);
+            const toState = getStepState(i + 1);
+            const isCompleted = fromState === 'completed' && (toState === 'completed' || toState === 'current');
+            return (
+              <div key={i} className="flex-1 h-0.5 mx-1">
+                <div className={`h-full ${
+                  isCompleted ? 'bg-green-500' :
+                  fromState === 'completed' && toState === 'cancelled' ? 'bg-red-400' :
+                  'border-t-2 border-dashed border-gray-300'
+                }`} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Vertical timeline (mobile) */}
+      <div className="md:hidden space-y-0">
+        {STEP_LABELS.map((label, index) => {
+          const state = getStepState(index);
+          const timestamp = getStepTimestamp(index);
+          const isLast = index === STEP_LABELS.length - 1;
+          return (
+            <div key={label} className="flex items-start gap-3">
+              <div className="flex flex-col items-center">
+                {/* Circle */}
+                {state === 'completed' && (
+                  <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                    ✓
+                  </div>
+                )}
+                {state === 'current' && (
+                  <div className="w-8 h-8 rounded-full bg-green-100 border-4 border-green-500 flex items-center justify-center relative shrink-0">
+                    <span className="absolute w-2.5 h-2.5 bg-green-500 rounded-full animate-ping" />
+                    <span className="w-2.5 h-2.5 bg-green-500 rounded-full" />
+                  </div>
+                )}
+                {state === 'cancelled' && (
+                  <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                    ✕
+                  </div>
+                )}
+                {state === 'future' && (
+                  <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-dashed border-gray-300 shrink-0" />
+                )}
+                {/* Connecting line */}
+                {!isLast && (
+                  <div className={`w-0.5 h-8 ${
+                    state === 'completed' && (getStepState(index + 1) === 'completed' || getStepState(index + 1) === 'current')
+                      ? 'bg-green-500'
+                      : state === 'completed' && getStepState(index + 1) === 'cancelled'
+                      ? 'bg-red-400'
+                      : 'border-l-2 border-dashed border-gray-300'
+                  }`} />
+                )}
+              </div>
+              <div className="pt-1 pb-4">
+                <span className={`text-sm font-medium ${
+                  state === 'completed' || state === 'current' ? 'text-green-700' :
+                  state === 'cancelled' ? 'text-red-600' : 'text-gray-400'
+                }`}>
+                  {state === 'cancelled' ? 'Cancelled' : label}
+                </span>
+                {timestamp && (
+                  <span className="block text-xs text-gray-500 mt-0.5">{timestamp}</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function OrderDetailPage() {
   const [order, setOrder] = useState(null);
@@ -140,6 +306,9 @@ export default function OrderDetailPage() {
             </span>
           </div>
 
+          {/* Order Timeline */}
+          <OrderTimeline order={order} />
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8 mb-6 md:mb-8">
             <div className="bg-gray-50 rounded-xl p-4 md:p-6">
               <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-3 md:mb-4">Delivery Address</h2>
@@ -208,6 +377,19 @@ export default function OrderDetailPage() {
               </button>
               <p className="text-xs md:text-sm text-gray-600 mt-3">
                 You can cancel this order before it's out for delivery
+              </p>
+            </div>
+          )}
+
+          {/* WhatsApp Confirm Button */}
+          {order.status !== 'Cancelled' && order.status !== 'Delivered' && (
+            <div className="border-t pt-4 md:pt-6 flex flex-col items-start gap-2">
+              <WhatsAppOrderButton
+                orderId={order._id.slice(-8).toUpperCase()}
+                totalAmount={order.totalAmount}
+              />
+              <p className="text-xs md:text-sm text-gray-500 mt-1">
+                Send a WhatsApp message to confirm your order
               </p>
             </div>
           )}

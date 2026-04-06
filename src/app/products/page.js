@@ -2,8 +2,11 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import api from '@/lib/api';
 import { useCart } from '@/context/CartContext';
+import { useWishlist } from '@/context/WishlistContext';
+import RecentlyViewed from '@/components/RecentlyViewed';
 
 const categories = [
   { label: 'All', icon: '✦' },
@@ -35,6 +38,7 @@ function ProductsContent() {
   const [view, setView] = useState('grid'); // grid | list
 
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -760,8 +764,12 @@ function ProductsContent() {
                   const disc = discount(product.price);
 
                   return (
-                    <div
+                    <Link
                       key={product._id}
+                      href={`/products/${product._id}`}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                    >
+                    <div
                       className={`pp-card ${view === 'list' ? 'list-card' : ''}`}
                     >
                       <div className="pp-img-wrap">
@@ -773,7 +781,7 @@ function ProductsContent() {
                             <span className="pp-out-badge">Out of Stock</span>
                           </div>
                         )}
-                        <button className="pp-wish">♡</button>
+                        <button className="pp-wish" onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product); }} style={isInWishlist(product._id) ? { color: '#e53e3e', opacity: 1 } : {}}>{isInWishlist(product._id) ? '♥' : '♡'}</button>
                       </div>
 
                       <div className="pp-body">
@@ -786,8 +794,14 @@ function ProductsContent() {
                           <p className="pp-desc">{product.description}</p>
                         )}
                         <div className="pp-rating">
-                          <span className="pp-stars">★★★★★</span>
-                          <span className="pp-rcount">(4.8)</span>
+                          <span className="pp-stars">
+                            {[1,2,3,4,5].map(s => (
+                              <span key={s} style={{ opacity: s <= Math.round(product.averageRating || 0) ? 1 : 0.3 }}>★</span>
+                            ))}
+                          </span>
+                          <span className="pp-rcount">
+                            {product.reviewCount > 0 ? `(${product.averageRating})` : 'No reviews'}
+                          </span>
                         </div>
                         <div className="pp-price-row">
                           <span className="pp-price-orig">${(product.price * 1.3).toFixed(2)}</span>
@@ -799,7 +813,7 @@ function ProductsContent() {
                           )}
                         </div>
                         <button
-                          onClick={() => handleAddToCart(product)}
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(product); }}
                           disabled={!inStock}
                           className={`pp-btn ${isAdded ? 'done' : inStock ? 'avail' : 'disabled'}`}
                         >
@@ -821,11 +835,16 @@ function ProductsContent() {
                         </button>
                       </div>
                     </div>
+                    </Link>
                   );
                 })}
               </div>
             </>
           )}
+          {/* Recently Viewed Sidebar (below products on mobile, sidebar on desktop) */}
+          <div style={{ marginTop: 48 }}>
+            <RecentlyViewed layout="horizontal" />
+          </div>
         </div>
       </div>
     </>

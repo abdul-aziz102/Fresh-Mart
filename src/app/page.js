@@ -9,6 +9,7 @@ import WhyFreshSection from '@/components/WhyFreshSection';
 import VideoSection from '@/components/VideoSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import NewsletterSection from '@/components/NewsletterSection';
+import RecentlyViewed from '@/components/RecentlyViewed';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -86,6 +87,9 @@ export default function Home() {
 
       {/* TESTIMONIALS SECTION */}
       <TestimonialsSection />
+
+      {/* RECENTLY VIEWED */}
+      <RecentlyViewed layout="horizontal" />
 
       {/* NEWSLETTER SECTION */}
       <NewsletterSection />

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useWishlist } from '@/context/WishlistContext';
 
 const tabs = [
   { label: 'All', icon: '✦' },
@@ -15,6 +16,7 @@ const tabs = [
 export default function FeaturedProducts({ products, onAddToCart }) {
   const [activeTab, setActiveTab] = useState('All');
   const [addedIds, setAddedIds] = useState({});
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   const handleAdd = (product) => {
     onAddToCart(product);
@@ -469,7 +471,8 @@ export default function FeaturedProducts({ products, onAddToCart }) {
               const discount = Math.round(((product.price * 1.3 - product.price) / (product.price * 1.3)) * 100);
 
               return (
-                <div key={product._id} className="fp-card">
+                <Link key={product._id} href={`/products/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <div className="fp-card">
                   <div className="fp-card-img-wrap">
                     <img src={product.image} alt={product.name} />
                     <div className="fp-card-overlay" />
@@ -480,7 +483,7 @@ export default function FeaturedProducts({ products, onAddToCart }) {
                       <span className="fp-badge badge-out">Out of Stock</span>
                     )}
 
-                    <button className="fp-wishlist" aria-label="Wishlist">♡</button>
+                    <button className="fp-wishlist" aria-label="Wishlist" onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(product); }} style={isInWishlist(product._id) ? { color: '#e53e3e', opacity: 1 } : {}}>{isInWishlist(product._id) ? '♥' : '♡'}</button>
                   </div>
 
                   <div className="fp-card-body">
@@ -493,8 +496,14 @@ export default function FeaturedProducts({ products, onAddToCart }) {
                     <p className="fp-card-unit">{product.unit || 'per kg'}</p>
 
                     <div className="fp-rating">
-                      <span className="stars">★★★★★</span>
-                      <span className="rating-count">(4.8)</span>
+                      <span className="stars">
+                        {[1,2,3,4,5].map(s => (
+                          <span key={s} style={{ opacity: s <= Math.round(product.averageRating || 0) ? 1 : 0.3 }}>★</span>
+                        ))}
+                      </span>
+                      <span className="rating-count">
+                        {product.reviewCount > 0 ? `(${product.averageRating})` : 'No reviews'}
+                      </span>
                     </div>
 
                     <div className="fp-price-row">
@@ -504,7 +513,7 @@ export default function FeaturedProducts({ products, onAddToCart }) {
                     </div>
 
                     <button
-                      onClick={() => inStock && handleAdd(product)}
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); inStock && handleAdd(product); }}
                       className={`fp-add-btn ${isAdded ? 'added' : inStock ? 'available' : 'unavailable'}`}
                     >
                       {isAdded ? (
@@ -526,6 +535,7 @@ export default function FeaturedProducts({ products, onAddToCart }) {
                     </button>
                   </div>
                 </div>
+                </Link>
               );
             })}
           </div>

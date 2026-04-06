@@ -309,7 +309,7 @@ export default function SignupPage() {
                 </svg>
               </div>
               <div>
-                <span className="su-logo-text">FreshMart</span>
+                <span className="su-logo-text">Azaan</span>
                 <span className="su-logo-sub">Premium Grocery</span>
               </div>
             </Link>
@@ -335,7 +335,7 @@ export default function SignupPage() {
           </div>
 
           <div className="su-left-bottom">
-            <p className="su-review">"FreshMart changed how I grocery shop. Everything arrives fresh and the prices are unbeatable."</p>
+            <p className="su-review">"Azaan changed how I grocery shop. Everything arrives fresh and the prices are unbeatable."</p>
             <div className="su-reviewer">
               <div className="su-reviewer-avatar">A</div>
               <div>

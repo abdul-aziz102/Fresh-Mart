@@ -11,7 +11,7 @@ export default function Layout({ children }) {
       </main>
       <footer className="bg-gray-800 text-white py-6 mt-auto w-full">
         <div className="w-full px-4 text-center">
-          <p>&copy; 2026 Grocery Store. All rights reserved.</p>
+          <p>&copy; 2026 Azaan Supermarket. All rights reserved. | Ghulam Shah Ln, Lyari, Karachi</p>
         </div>
       </footer>
     </div>

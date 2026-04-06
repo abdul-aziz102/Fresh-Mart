@@ -5,6 +5,21 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '@/lib/api';
+import dynamic from 'next/dynamic';
+
+const LocationMap = dynamic(() => import('@/components/LocationMap'), {
+  ssr: false,
+  loading: () => (
+    <div style={{
+      height: 250, background: '#f0faf4', borderRadius: 12,
+      border: '1.5px solid rgba(45,106,79,0.11)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 13, color: '#6b7280',
+    }}>
+      Loading map...
+    </div>
+  ),
+});
 
 const statusOptions = ['Pending', 'Confirmed', 'Out for Delivery', 'Delivered'];
 
@@ -232,7 +247,7 @@ export default function AdminOrdersPage() {
                         </div>
                         <div className="ao-card-top-right">
                           <span className="ao-order-date">
-                            {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            {new Date(order.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true })}
                           </span>
                           <span className="ao-status-badge" style={{background:sc.bg, color:sc.color, borderColor:sc.border}}>
                             {order.status}
@@ -272,6 +287,31 @@ export default function AdminOrdersPage() {
                             </span>
                           ))}
                         </div>
+                      </div>
+
+                      {/* Location map */}
+                      <div className="ao-items-section">
+                        <span className="ao-items-label">Delivery Location</span>
+                        {order.location && order.location.lat && order.location.lng ? (
+                          <LocationMap
+                            lat={order.location.lat}
+                            lng={order.location.lng}
+                            address={order.location.address}
+                            height={250}
+                          />
+                        ) : (
+                          <div style={{
+                            padding: '20px', background: '#f9fafb', borderRadius: 12,
+                            border: '1.5px dashed rgba(45,106,79,0.15)',
+                            textAlign: 'center', color: '#6b7280', fontSize: 13,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                          }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            No location provided
+                          </div>
+                        )}
                       </div>
 
                       {/* Status update */}

@@ -79,9 +79,9 @@ const whyItems = [
 ];
 
 const team = [
-  { name: 'Ayesha Khan', role: 'Founder & CEO', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80' },
-  { name: 'Bilal Rauf', role: 'Head of Sourcing', img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&q=80' },
-  { name: 'Sara Malik', role: 'Operations Lead', img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&q=80' },
+  { name: 'Our Store', role: 'Azaan Supermarket', img: 'https://lh3.googleusercontent.com/p/AF1QipN-alGvdi5YumiFvkcz9JaqJPJ7BqvfMd5cI18x=w938-h757-p-k-no' },
+  { name: 'Inside View', role: 'Clean & Organized', img: 'https://lh3.googleusercontent.com/p/AF1QipMdz4inCupPvXaAqW0MJurN3W4keHgK5f6eWLLM=w938-h757-p-k-no' },
+  { name: 'Product Range', role: 'Best Prices Guaranteed', img: 'https://lh3.googleusercontent.com/p/AF1QipOjn-fN06akWz9lj5G69aS2WmKOQ-fleG71g6zZ=w938-h757-p-k-no' },
 ];
 
 export default function About() {
@@ -406,6 +406,34 @@ export default function About() {
           display: block;
         }
 
+        /* ── GALLERY ── */
+        .ab-gallery {
+          display: grid; grid-template-columns: repeat(3, 1fr);
+          gap: 16px; margin-top: 48px;
+        }
+        .ab-gallery-item {
+          border-radius: 20px; overflow: hidden;
+          aspect-ratio: 4/3;
+          box-shadow: 0 8px 28px rgba(13,43,31,0.10);
+          transition: var(--t);
+        }
+        .ab-gallery-item:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 44px rgba(13,43,31,0.18);
+        }
+        .ab-gallery-item img {
+          width: 100%; height: 100%; object-fit: cover;
+          transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        .ab-gallery-item:hover img { transform: scale(1.06); }
+
+        @media (max-width: 768px) {
+          .ab-gallery { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 480px) {
+          .ab-gallery { grid-template-columns: 1fr; }
+        }
+
         /* ── CTA BANNER ── */
         .ab-cta {
           background: linear-gradient(135deg, var(--g-deep), #1a3a2a);
@@ -477,12 +505,12 @@ export default function About() {
               Our Story
               <span className="ab-eyebrow-dash" />
             </div>
-            <h1>About <em>FreshMart</em></h1>
+            <h1>About <em>Azaan Supermarket</em></h1>
             <p className="ab-hero-sub">
-              Your trusted partner for farm-fresh groceries — grown with care, delivered with love, every single day.
+              Your neighborhood supermarket in Lyari, Karachi — neat, clean, and offering the best prices for your daily grocery needs.
             </p>
             <div className="ab-hero-stats">
-              {[['1,000+','Happy Customers'],['500+','Products'],['50+','Local Farms'],['24/7','Support']].map(([n,l]) => (
+              {[['4.4★','Google Rating'],['56+','Reviews'],['500+','Products'],['11 PM','Open Until']].map(([n,l]) => (
                 <div key={l} className="ab-hero-stat">
                   <span className="stat-num stat-green">{n}</span>
                   <span className="stat-label">{l}</span>
@@ -498,25 +526,25 @@ export default function About() {
             <div className="ab-story-grid">
               <div className="ab-story-text">
                 <div className="ab-eyebrow"><span className="ab-dash" /> Who We Are</div>
-                <h2 className="ab-h2">Built on a <em>passion</em><br />for freshness</h2>
-                <p>Founded with a simple belief — everyone deserves access to fresh, quality food at fair prices. We started as a small stall at the local market and have grown into a trusted online destination for thousands of families.</p>
-                <p>We work hand-in-hand with over 50 local farmers and suppliers, cutting out the middlemen so you get the freshest produce at the best prices. From field to your table in under 24 hours.</p>
+                <h2 className="ab-h2">A <em>unique</em> supermarket<br />in Lyari</h2>
+                <p>Azaan Supermarket is a neat and clean shopping destination located on Ghulam Shah Ln, Lyari, Karachi, Pakistan. With a very unique ideology behind our name, we've built a reputation for quality and affordability in our community.</p>
+                <p>We pride ourselves on offering a disturbance-free shopping experience with prices much better than any other supermarket in the area. Our customers are our family, and their satisfaction is our top priority.</p>
                 <div className="ab-mission">
                   <div className="ab-mission-dot" />
                   <div className="ab-mission-inner">
                     <span className="ab-mission-tag">✦ Our Mission</span>
-                    <h3>Fresh food for every home</h3>
-                    <p>To make premium, organic groceries accessible to every household through convenient online shopping, transparent sourcing, and same-day delivery.</p>
+                    <h3>Quality groceries for every home</h3>
+                    <p>To serve the community of Lyari and Karachi with fresh, affordable groceries in a clean and welcoming environment — making daily shopping a pleasant experience for every family.</p>
                   </div>
                 </div>
               </div>
 
               <div>
                 <div className="ab-story-img">
-                  <img src="https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=85" alt="Fresh produce at market" />
+                  <img src="https://lh3.googleusercontent.com/p/AF1QipNGkzGdK9FqBfsYDCWadTs5HLq8mHf9i4JhojXm=w938-h757-p-k-no" alt="Azaan Supermarket storefront" />
                   <div className="ab-story-img-badge">
-                    <span className="ab-badge-num">12+</span>
-                    <span className="ab-badge-label">Years of Freshness</span>
+                    <span className="ab-badge-num">4.4★</span>
+                    <span className="ab-badge-label">Google Rating</span>
                   </div>
                 </div>
               </div>
@@ -555,13 +583,13 @@ export default function About() {
           <div className="ab-inner">
             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'start'}}>
               <div>
-                <div className="ab-eyebrow"><span className="ab-dash" /> Why FreshMart</div>
+                <div className="ab-eyebrow"><span className="ab-dash" /> Why Azaan Supermarket</div>
                 <h2 className="ab-h2">The difference<br />you can <em>taste</em></h2>
-                <p className="ab-lead">We don't just deliver groceries. We deliver trust, transparency, and a commitment to quality that you'll notice in every bite.</p>
+                <p className="ab-lead">We don't just sell groceries. We deliver trust, cleanliness, and a commitment to quality that our community has rated 4.4 stars.</p>
                 <div style={{marginTop:32}}>
                   <img
-                    src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=600&q=80"
-                    alt="Fresh vegetables"
+                    src="https://lh3.googleusercontent.com/p/AF1QipMM0gnNi7gYKn9atHgn2HLgcJB3caB9Iiy-5x8_=w938-h757-p-k-no"
+                    alt="Inside Azaan Supermarket"
                     style={{width:'100%', borderRadius:24, objectFit:'cover', height:220, boxShadow:'0 16px 48px rgba(13,43,31,0.14)'}}
                   />
                 </div>
@@ -585,10 +613,10 @@ export default function About() {
         <div className="ab-section">
           <div className="ab-inner">
             <div style={{textAlign:'center'}}>
-              <div className="ab-eyebrow" style={{justifyContent:'center'}}><span className="ab-dash" /> The People <span className="ab-dash" /></div>
-              <h2 className="ab-h2" style={{textAlign:'center', margin:'0 auto 12px'}}>Meet our <em>team</em></h2>
+              <div className="ab-eyebrow" style={{justifyContent:'center'}}><span className="ab-dash" /> Our Store <span className="ab-dash" /></div>
+              <h2 className="ab-h2" style={{textAlign:'center', margin:'0 auto 12px'}}>Inside <em>Azaan</em></h2>
               <p className="ab-lead" style={{margin:'0 auto', textAlign:'center'}}>
-                Passionate people behind every fresh delivery.
+                A neat, clean, and welcoming shopping experience in Lyari, Karachi.
               </p>
             </div>
             <div className="ab-team-grid">
@@ -607,12 +635,39 @@ export default function About() {
           </div>
         </div>
 
+        {/* ── PHOTO GALLERY ── */}
+        <div className="ab-section">
+          <div className="ab-inner">
+            <div style={{textAlign:'center'}}>
+              <div className="ab-eyebrow" style={{justifyContent:'center'}}><span className="ab-dash" /> Photos & Videos <span className="ab-dash" /></div>
+              <h2 className="ab-h2" style={{textAlign:'center', margin:'0 auto 12px'}}>See our <em>supermarket</em></h2>
+              <p className="ab-lead" style={{margin:'0 auto', textAlign:'center'}}>
+                Take a look inside Azaan Supermarket — from our shelves to our storefront.
+              </p>
+            </div>
+            <div className="ab-gallery">
+              {[
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipNGkzGdK9FqBfsYDCWadTs5HLq8mHf9i4JhojXm=w938-h757-p-k-no', alt: 'Azaan Supermarket storefront' },
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipMM0gnNi7gYKn9atHgn2HLgcJB3caB9Iiy-5x8_=w938-h757-p-k-no', alt: 'Inside Azaan Supermarket' },
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipN-alGvdi5YumiFvkcz9JaqJPJ7BqvfMd5cI18x=w938-h757-p-k-no', alt: 'Store aisle view' },
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipMdz4inCupPvXaAqW0MJurN3W4keHgK5f6eWLLM=w938-h757-p-k-no', alt: 'Product shelves' },
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipN22iv2uHM8DNEI7aQ8lh2G9VwU84xWR728Soup=w938-h757-p-k-no', alt: 'Store interior' },
+                { src: 'https://lh3.googleusercontent.com/p/AF1QipOjn-fN06akWz9lj5G69aS2WmKOQ-fleG71g6zZ=w938-h757-p-k-no', alt: 'Product display' },
+              ].map((photo, i) => (
+                <div key={i} className="ab-gallery-item">
+                  <img src={photo.src} alt={photo.alt} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* ── CTA ── */}
         <div className="ab-cta">
           <div className="ab-cta-dots" />
           <div className="ab-cta-inner">
             <h2>Start shopping <em>fresh</em><br />today</h2>
-            <p>Join thousands of happy customers who trust FreshMart for their daily grocery needs. Free delivery on your first order.</p>
+            <p>Join our growing community of happy customers who trust Azaan Supermarket for their daily grocery needs. Visit us in Lyari or order online!</p>
             <a href="/products" className="ab-cta-btn">
               Explore Products
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

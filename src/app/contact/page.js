@@ -5,7 +5,7 @@ import { useState } from 'react';
 const faqs = [
   {
     q: 'What are your delivery hours?',
-    a: 'We deliver Monday through Saturday from 8am to 10pm, and Sundays from 9am to 8pm. Same-day slots fill up fast — order early!',
+    a: 'We are open every day and close at 11 PM. Delivery is available throughout the day — order early for same-day delivery!',
   },
   {
     q: 'Do you offer same-day delivery?',
@@ -33,8 +33,8 @@ const contactCards = [
       </svg>
     ),
     label: 'Call Us',
-    value: '+1 (555) 123-4567',
-    sub: 'Mon–Fri, 9am–6pm',
+    value: 'Contact via Google Maps',
+    sub: 'Mon–Sun, Open till 11 PM',
     color: '#1a4731',
     accent: '#52b788',
     bg: 'linear-gradient(145deg, #0d2b1f, #1a4731)',
@@ -46,8 +46,8 @@ const contactCards = [
       </svg>
     ),
     label: 'Email Us',
-    value: 'support@grocery.com',
-    sub: '24/7 Support',
+    value: 'azaansupermarket@gmail.com',
+    sub: 'We respond within 24 hours',
     color: '#1a3a5c',
     accent: '#90cdf4',
     bg: 'linear-gradient(145deg, #0f2744, #1a3a5c)',
@@ -59,8 +59,8 @@ const contactCards = [
       </svg>
     ),
     label: 'Visit Us',
-    value: '123 Grocery Street',
-    sub: 'City, State 12345',
+    value: 'Ghulam Shah Ln, Lyari',
+    sub: 'Karachi, 74660, Pakistan',
     color: '#5c3a1a',
     accent: '#f0c97a',
     bg: 'linear-gradient(145deg, #3d2000, #6b3a0f)',
@@ -72,8 +72,8 @@ const contactCards = [
       </svg>
     ),
     label: 'Open Hours',
-    value: 'Mon–Sat: 8am–10pm',
-    sub: 'Sun: 9am–8pm',
+    value: 'Mon–Sun: Open daily',
+    sub: 'Closes 11 PM',
     color: '#3a1a5c',
     accent: '#b794f4',
     bg: 'linear-gradient(145deg, #240d40, #3a1a5c)',
@@ -530,11 +530,11 @@ export default function Contact() {
           <div className="ct-right">
             {/* Map */}
             <div className="ct-map">
-              <img className="ct-map-img" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=700&q=80" alt="Location map" />
+              <img className="ct-map-img" src="https://lh3.googleusercontent.com/p/AF1QipNGkzGdK9FqBfsYDCWadTs5HLq8mHf9i4JhojXm=w938-h757-p-k-no" alt="Azaan Supermarket Location" />
               <div className="ct-map-overlay">
                 <span className="ct-map-label">
                   <span className="ct-map-pin">📍</span>
-                  123 Grocery Street, City, State 12345
+                  Ghulam Shah Ln, Lyari, Karachi, 74660, Pakistan
                 </span>
               </div>
             </div>

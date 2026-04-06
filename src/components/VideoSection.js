@@ -217,7 +217,7 @@ export default function VideoSection() {
         <div className="video-container">
           <div className="video-left">
             <div className="video-eyebrow">
-              ✦ FreshMart Story
+              ✦ Azaan Supermarket Story
             </div>
 
             <h2 className="video-heading">

@@ -350,7 +350,7 @@ export default function LoginPage() {
                 </svg>
               </div>
               <div>
-                <span className="li-logo-text">FreshMart</span>
+                <span className="li-logo-text">Azaan</span>
                 <span className="li-logo-sub">Premium Grocery</span>
               </div>
             </Link>

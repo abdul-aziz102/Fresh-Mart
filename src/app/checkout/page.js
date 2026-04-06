@@ -5,6 +5,21 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
+import nextDynamic from 'next/dynamic';
+
+const LocationPicker = nextDynamic(() => import('@/components/LocationPicker'), {
+  ssr: false,
+  loading: () => (
+    <div style={{
+      height: 260, background: '#f0faf4', borderRadius: 16,
+      border: '1.5px solid rgba(45,106,79,0.11)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontSize: 14, color: '#6b7280',
+    }}>
+      Loading map...
+    </div>
+  ),
+});
 
 export default function CheckoutPage() {
   const { cart, getCartTotal, clearCart } = useCart();
@@ -19,12 +34,40 @@ export default function CheckoutPage() {
     phone: user?.phone || '',
   });
 
+  const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState(1); // 1: address, 2: review
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(null); // { code, discountPercent, discountAmount, newTotal }
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState('');
+
   const handleChange = (e) => {
     setDeliveryAddress({ ...deliveryAddress, [e.target.name]: e.target.value });
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponError('');
+    setCouponLoading(true);
+    try {
+      const res = await api.post('/coupons/apply', { code: couponCode, cartTotal: getCartTotal() });
+      setCouponApplied(res.data);
+    } catch (err) {
+      setCouponError(err.response?.data?.message || 'Invalid coupon');
+      setCouponApplied(null);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setCouponApplied(null);
+    setCouponCode('');
+    setCouponError('');
   };
 
   const handleSubmit = async (e) => {
@@ -37,6 +80,8 @@ export default function CheckoutPage() {
       const orderData = {
         items: cart.map((item) => ({ product: item._id, quantity: item.quantity })),
         deliveryAddress,
+        location,
+        couponCode: couponApplied?.code || undefined,
       };
       const response = await api.post('/orders', orderData);
       clearCart();
@@ -50,7 +95,8 @@ export default function CheckoutPage() {
 
   const deliveryFee = 0;
   const subtotal = getCartTotal();
-  const total = subtotal + deliveryFee;
+  const discount = couponApplied ? couponApplied.discountAmount : 0;
+  const total = subtotal + deliveryFee - discount;
 
   // ── NOT LOGGED IN ──
   if (!user) return (
@@ -220,6 +266,12 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
+                  {/* Map location picker */}
+                  <div className="co-field">
+                    <label className="co-label">Select Your Location on Map</label>
+                    <LocationPicker onLocationChange={(loc) => setLocation(loc)} />
+                  </div>
+
                   {/* Payment method */}
                   <div className="co-payment-box">
                     <div className="co-payment-left">
@@ -296,6 +348,43 @@ export default function CheckoutPage() {
                   ))}
                 </div>
 
+                {/* coupon input */}
+                <div className="co-coupon-box">
+                  <label className="co-label" style={{marginBottom: 4}}>Coupon Code</label>
+                  {couponApplied ? (
+                    <div className="co-coupon-applied">
+                      <div style={{display:'flex',alignItems:'center',gap:8}}>
+                        <span style={{fontSize:16}}>🎉</span>
+                        <div>
+                          <span style={{fontWeight:600,color:'var(--g-rich)',fontSize:14}}>{couponApplied.code}</span>
+                          <span style={{fontSize:12,color:'var(--g-main)',marginLeft:6}}>-{couponApplied.discountPercent}% off</span>
+                        </div>
+                      </div>
+                      <button onClick={handleRemoveCoupon} className="co-coupon-remove">Remove</button>
+                    </div>
+                  ) : (
+                    <div className="co-coupon-input-row">
+                      <input
+                        className="co-input"
+                        type="text"
+                        placeholder="Enter coupon code"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        style={{paddingLeft:14,flex:1}}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleApplyCoupon}
+                        disabled={couponLoading || !couponCode.trim()}
+                        className="co-coupon-btn"
+                      >
+                        {couponLoading ? '...' : 'Apply'}
+                      </button>
+                    </div>
+                  )}
+                  {couponError && <span className="co-coupon-error">{couponError}</span>}
+                </div>
+
                 {/* totals */}
                 <div className="co-totals">
                   <div className="co-total-row">
@@ -306,6 +395,12 @@ export default function CheckoutPage() {
                     <span>Delivery Fee</span>
                     <span className="co-free">FREE</span>
                   </div>
+                  {couponApplied && (
+                    <div className="co-total-row" style={{color:'#e53e3e'}}>
+                      <span>Discount ({couponApplied.discountPercent}%)</span>
+                      <span style={{fontWeight:600}}>-${discount.toFixed(2)}</span>
+                    </div>
+                  )}
                   <div className="co-total-row co-total-final">
                     <span>Total</span>
                     <span>${total.toFixed(2)}</span>
@@ -636,6 +731,40 @@ const baseStyles = `
     font-size: 11px; font-weight: 500; color: var(--muted);
     background: white; border: 1px solid var(--border);
     border-radius: 20px; padding: 4px 10px;
+  }
+
+  /* ── COUPON ── */
+  .co-coupon-box {
+    display: flex; flex-direction: column; gap: 6px;
+    padding-bottom: 18px; border-bottom: 1px solid var(--border);
+    margin-bottom: 0;
+  }
+  .co-coupon-input-row {
+    display: flex; gap: 8px; align-items: stretch;
+  }
+  .co-coupon-btn {
+    padding: 10px 20px; border: none; border-radius: 12px;
+    background: linear-gradient(135deg, var(--g-main), var(--g-deep));
+    color: white; font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: var(--t); white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(45,106,79,0.22);
+  }
+  .co-coupon-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(45,106,79,0.30); }
+  .co-coupon-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .co-coupon-applied {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--g-soft); border: 1.5px solid rgba(82,183,136,0.25);
+    border-radius: 12px; padding: 12px 14px;
+  }
+  .co-coupon-remove {
+    background: none; border: none; color: #e53e3e;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+  }
+  .co-coupon-remove:hover { text-decoration: underline; }
+  .co-coupon-error {
+    font-size: 12px; color: #e53e3e; font-weight: 500;
   }
 
   /* ── RESPONSIVE ── */

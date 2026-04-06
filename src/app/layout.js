@@ -3,6 +3,8 @@ import "./globals.css";
 import Layout from "@/components/Layout";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import ChatBot from "@/components/ChatBot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Grocery Store - Fresh Products Delivered",
-  description: "Order fresh groceries online with cash on delivery",
+  title: "Azaan Supermarket - Fresh Groceries in Lyari, Karachi",
+  description: "Azaan Supermarket - Your trusted neighborhood supermarket in Lyari, Karachi. Fresh groceries, best prices, cash on delivery.",
 };
 
 export default function RootLayout({ children }) {
@@ -27,7 +29,10 @@ export default function RootLayout({ children }) {
       >
         <AuthProvider>
           <CartProvider>
-            <Layout>{children}</Layout>
+            <WishlistProvider>
+              <Layout>{children}</Layout>
+              <ChatBot />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </body>

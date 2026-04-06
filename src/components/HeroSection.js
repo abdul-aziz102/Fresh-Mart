@@ -47,7 +47,7 @@ export default function HeroSection() {
           --muted:   #6b7280;
         }
 
-        /* ── WRAP ── */
+        /* WRAP */
         .hs-wrap {
           font-family: 'Outfit', sans-serif;
           position: relative;
@@ -57,29 +57,24 @@ export default function HeroSection() {
           overflow: hidden;
         }
 
-        /* ── BG IMAGE ── */
-        .hs-bg {
+        /* BG IMAGE */
+        .hs-video-fallback {
           position: absolute; inset: 0;
-          background-image: url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1800&q=90');
+          background-image: url('https://lh3.googleusercontent.com/p/AF1QipNGkzGdK9FqBfsYDCWadTs5HLq8mHf9i4JhojXm=w1800-h1200-p-k-no');
           background-size: cover;
           background-position: center 40%;
           z-index: 0;
-          animation: slowZoom 20s ease-in-out infinite alternate;
-        }
-        @keyframes slowZoom {
-          from { transform: scale(1.0); }
-          to   { transform: scale(1.08); }
         }
 
-        /* ── OVERLAYS ── */
+        /* OVERLAYS */
         .hs-overlay {
           position: absolute; inset: 0; z-index: 1;
           background: linear-gradient(
             108deg,
-            rgba(8,22,14,0.97) 0%,
-            rgba(13,43,31,0.90) 35%,
-            rgba(13,43,31,0.55) 60%,
-            rgba(13,43,31,0.12) 100%
+            rgba(8,22,14,0.96) 0%,
+            rgba(13,43,31,0.88) 35%,
+            rgba(13,43,31,0.52) 60%,
+            rgba(13,43,31,0.10) 100%
           );
         }
         .hs-dots {
@@ -88,7 +83,7 @@ export default function HeroSection() {
           background-size: 28px 28px;
         }
 
-        /* ── INNER ── */
+        /* INNER */
         .hs-inner {
           position: relative; z-index: 3;
           width: 100%; max-width: 1440px;
@@ -100,7 +95,7 @@ export default function HeroSection() {
           align-items: center;
         }
 
-        /* ══ LEFT ══ */
+        /* LEFT */
         .hs-left { display: flex; flex-direction: column; }
 
         .hs-eyebrow {
@@ -128,7 +123,7 @@ export default function HeroSection() {
           letter-spacing: -1.5px;
           animation: fadeUp 0.7s 0.18s both;
         }
-        .hs-h1 .hs-green { color: var(--g-vivid); }
+        .hs-h1 .hs-green  { color: var(--g-vivid); }
         .hs-h1 .hs-italic { font-style: italic; }
 
         .hs-sub {
@@ -215,7 +210,7 @@ export default function HeroSection() {
         }
         .hs-divider { width: 1px; height: 34px; background: rgba(255,255,255,0.12); }
 
-        /* ══ RIGHT ══ */
+        /* RIGHT */
         .hs-right {
           position: relative;
           animation: floatPanel 5s ease-in-out infinite;
@@ -225,16 +220,13 @@ export default function HeroSection() {
           50%      { transform: translateY(-14px); }
         }
 
-        /* glass panel */
         .hs-panel {
           background: rgba(255,255,255,0.09);
           border: 1px solid rgba(255,255,255,0.18);
           border-radius: 28px; padding: 26px;
           backdrop-filter: blur(28px);
           -webkit-backdrop-filter: blur(28px);
-          box-shadow:
-            0 28px 72px rgba(0,0,0,0.40),
-            inset 0 1px 0 rgba(255,255,255,0.14);
+          box-shadow: 0 28px 72px rgba(0,0,0,0.40), inset 0 1px 0 rgba(255,255,255,0.14);
         }
 
         .hs-panel-header {
@@ -253,7 +245,6 @@ export default function HeroSection() {
           border-radius: 20px; padding: 3px 10px;
         }
 
-        /* product grid */
         .hs-products { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
 
         .hs-product-card {
@@ -262,17 +253,13 @@ export default function HeroSection() {
           transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
           cursor: pointer; position: relative; overflow: hidden;
         }
-        .hs-product-card:hover {
-          transform: scale(1.03) translateY(-4px);
-          box-shadow: 0 16px 44px rgba(0,0,0,0.22);
-        }
+        .hs-product-card:hover { transform: scale(1.03) translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.22); }
         .hs-product-img {
           width: 100%; height: 100px; object-fit: cover;
           border-radius: 12px; margin-bottom: 10px; display: block;
           transition: transform 0.4s;
         }
         .hs-product-card:hover .hs-product-img { transform: scale(1.05); }
-
         .hs-product-label {
           font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
           text-transform: uppercase; color: var(--g-main);
@@ -289,7 +276,6 @@ export default function HeroSection() {
           font-size: 18px; font-weight: 700; color: var(--g-rich); line-height: 1;
         }
         .hs-price-orig { font-size: 11px; color: #9ca3af; text-decoration: line-through; }
-
         .hs-add-btn {
           width: 28px; height: 28px; border-radius: 50%;
           background: linear-gradient(135deg, var(--g-vivid), var(--g-main));
@@ -301,7 +287,6 @@ export default function HeroSection() {
         }
         .hs-add-btn:hover { transform: scale(1.18) rotate(90deg); box-shadow: 0 5px 16px rgba(45,106,79,0.52); }
 
-        /* view all */
         .hs-view-all {
           display: flex; align-items: center; justify-content: center; gap: 8px;
           width: 100%; padding: 13px;
@@ -314,7 +299,6 @@ export default function HeroSection() {
         }
         .hs-view-all:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(13,43,31,0.60); }
 
-        /* floating badges */
         .hs-badge-organic {
           position: absolute; top: -18px; right: 20px;
           background: white; border-radius: 14px; padding: 10px 16px;
@@ -328,7 +312,6 @@ export default function HeroSection() {
           background: var(--g-vivid);
           box-shadow: 0 0 0 3px rgba(82,183,136,0.22);
         }
-
         .hs-badge-deal {
           position: absolute; bottom: 56px; left: -22px;
           background: linear-gradient(135deg, var(--g-deep), var(--g-rich));
@@ -354,16 +337,17 @@ export default function HeroSection() {
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1100px) {
           .hs-inner { padding: 80px 40px 60px; gap: 40px; }
           .hs-h1 { font-size: 60px; }
+          .hs-video-ctrl { left: 40px; }
         }
         @media (max-width: 860px) {
           .hs-inner { grid-template-columns: 1fr; padding: 60px 24px 48px; gap: 48px; }
           .hs-right { animation: none; }
           .hs-badge-deal { left: 8px; bottom: 36px; }
           .hs-badge-organic { top: -14px; right: 12px; }
+          .hs-video-ctrl { left: 24px; bottom: 20px; }
         }
         @media (max-width: 520px) {
           .hs-h1 { font-size: 44px; }
@@ -373,13 +357,16 @@ export default function HeroSection() {
       `}</style>
 
       <section className="hs-wrap">
-        <div className="hs-bg" />
+
+        {/* BACKGROUND IMAGE */}
+        <div className="hs-video-fallback" />
+
         <div className="hs-overlay" />
         <div className="hs-dots" />
 
         <div className="hs-inner">
 
-          {/* ══ LEFT ══ */}
+          {/* LEFT */}
           <div className="hs-left">
             <div className="hs-eyebrow">
               <span className="hs-dot" />
@@ -387,20 +374,20 @@ export default function HeroSection() {
             </div>
 
             <h1 className="hs-h1">
-              Taste the <span className="hs-green hs-italic">Purest</span><br />
-              Green: Sourced<br />
-              Fresh, Delivered<br />
-              <span className="hs-green">PURE</span>
+              Welcome to<br />
+              <span className="hs-green hs-italic">Azaan</span><br />
+              Supermarket<br />
+              <span className="hs-green">LYARI</span>
             </h1>
 
             <p className="hs-sub">
-              Handpicked from local farms every morning. Taste the difference that genuine freshness makes on your table.
+              Your neighborhood supermarket in Lyari, Karachi. Clean, affordable, and stocked with everything your family needs.
             </p>
 
             <div className="hs-price-row">
-              <span className="hs-price-label">Starting from</span>
-              <span className="hs-price-num">$25</span>
-              <span className="hs-price-per">/ basket</span>
+              <span className="hs-price-label">Best prices in</span>
+              <span className="hs-price-num">Lyari</span>
+              <span className="hs-price-per">· Karachi</span>
             </div>
 
             <div className="hs-btns">
@@ -422,7 +409,7 @@ export default function HeroSection() {
             </div>
 
             <div className="hs-trust">
-              {[['12K+','Customers'],['98%','Organic'],['2hr','Delivery'],['50+','Varieties']].map(([num, label], i, arr) => (
+              {[['4.4★','Rating'],['56+','Reviews'],['500+','Products'],['11PM','Open Until']].map(([num, label], i, arr) => (
                 <div key={label} style={{display:'contents'}}>
                   <div className="hs-stat">
                     <span className="hs-stat-num">{num}</span>
@@ -434,7 +421,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* ══ RIGHT ══ */}
+          {/* RIGHT */}
           <div className="hs-right">
             <div className="hs-badge-organic">
               <span className="hs-badge-organic-dot" />
@@ -483,6 +470,7 @@ export default function HeroSection() {
           </div>
 
         </div>
+
       </section>
     </>
   );

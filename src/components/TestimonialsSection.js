@@ -3,7 +3,7 @@ export default function TestimonialsSection() {
     {
       name: 'Sara K.',
       initial: 'S',
-      text: 'The freshest vegetables I\'ve ever had delivered. FreshMart is now part of my weekly routine!',
+      text: 'The freshest vegetables I\'ve ever had delivered. Azaan Supermarket is now part of my weekly routine!',
       role: 'Verified Customer'
     },
     {
